@@ -1,0 +1,76 @@
+\chapter{Static networks, heterogeneous mean field approximation}
+
+\resp{Veronica Bedin}
+
+\section{Heterogeneous Mean-Field Approximation}
+
+To capture the dynamics of epidemics on networks with broad degree distributions, such as scale-free networks, a more refined analytical approach is needed. In these systems, high-degree nodes (hubs) play a disproportionate role in transmission, making the homogeneous mean-field approximation insufficient. Instead, I adopt the \textit{heterogeneous mean-field} (HMF) approximation, which accounts for degree-dependent infection probabilities. This approach is called \textit{Degree based mean field approach}
+
+This framework is particularly relevant for networks where the degree distribution follows a power law, as discussed in the seminal work by Pastor-Satorras and Vespignani~\cite{pastor2001epidemic}. In what follows, I focus again on the \textit{SIS} model to explore the implications of network heterogeneity on the epidemic threshold and spreading dynamics.
+
+A deeper treatment of the models and governing ODEs is provided in Appendix~\ref{app:Heterogeneous_MF}, where \textit{SI}, \textit{SIR}, and \textit{SEIR} are described. Here, I focus analytically on the \textit{SIS} model.
+
+\subsection{\textit{SIS} Dynamics on Heterogeneous Networks}
+To formulate the \textit{SIS} model within the heterogeneous mean-field approximation, we divide nodes into compartments based on their degree. Let  
+\[
+s_k = \frac{S_k}{N_k}, \qquad \rho_k = \frac{I_k}{N_k},
+\]  
+where \(s_k\) and \(\rho_k\) denote the fractions of susceptible and infected nodes of degree \(k\), and \(N_k\) is the total number of nodes with degree \(k\).
+
+This leads to a system of differential equations, one for each degree class: 
+\begin{equation}
+\frac{d\rho_k(t)}{dt} = -\mu \rho_k(t) + \beta k \left(1 - \rho_k(t)\right)\Theta_k(t),
+\label{eq:SIS_heterogeneous_network_dynamics}
+\end{equation}
+where \(\Theta_k(t)\) is the probability that a neighbor of a node with degree \(k\) is infected. It is given by:
+\[
+\Theta_k(t) = \sum_{k'} P(k'|k) \rho_{k'}(t).
+\]
+
+Assuming no degree correlations, the conditional probability becomes:
+\[
+P(k'|k) = \frac{k' P(k')}{\sum_{k'} k' P(k')} = \frac{k' P(k')}{\langle k \rangle},
+\]
+and thus:
+\[
+\Theta_k(t) = \frac{\sum_{k'} k' P(k') \rho_{k'}(t)}{\langle k \rangle} = \Theta(t),
+\]
+which shows that \(\Theta(t)\) becomes independent of \(k\).
+
+At steady state, where \(\frac{d\rho_k(t)}{dt} = 0\), we find:
+\[
+\rho_k = \frac{\beta k \Theta}{\mu + \beta k \Theta}.
+\]
+Substituting this expression into the definition of \(\Theta\) yields a self-consistent equation:
+\[
+\Theta = \frac{1}{\langle k \rangle} \sum_k \frac{k^2 P(k) \beta \Theta}{\mu + \beta k \Theta} = f(\Theta).
+\]
+
+To determine whether a non-trivial solution (\(0 < \Theta \leq 1\)) exists, we analyze the derivative at \(\Theta = 0\):
+\[
+\left. \frac{d}{d\Theta} \left( \frac{1}{\langle k \rangle} \sum_k \frac{k^2 P(k) \beta \Theta}{\mu + \beta k \Theta} \right) \right|_{\Theta = 0} \geq 1,
+\]
+which leads to the condition:
+\[
+\frac{\beta}{\mu \langle k \rangle} \sum_k k^2 P(k) \geq 1,
+\]
+or equivalently,
+\[
+\frac{\beta \langle k^2 \rangle}{\mu \langle k \rangle} \geq 1.
+\]
+This inequality determines the onset of an \textit{endemic state}. The corresponding epidemic threshold is:
+\[
+\beta_c = \frac{\mu \langle k \rangle}{\langle k^2 \rangle}.
+\]
+
+For homogeneous networks, where \(\langle k^2 \rangle = \langle k \rangle^2\), we recover the standard threshold. However, in scale-free networks with \(2 < \gamma < 3\), the moments behave as \(\langle k \rangle \rightarrow c\) and \(\langle k^2 \rangle \rightarrow \infty\) as \(N \rightarrow \infty\). In this limit:
+$\beta_c \rightarrow 0$
+implying that the epidemic threshold vanishes in the thermodynamic limit. As a result, any disease, no matter how weakly infectious, can propagate through the network. Thresholds are explored in the Section \ref{app:Thresholds}.
+
+I will perform the same analysis for the \textit{SIR} model in the Supplementary Material (see Appendix~\ref{app:Heterogeneous_MF}), where I also derive the expected finite-size effects for \textit{SIS}. In particular, I expect to observe:
+$$\beta_c \simeq \left(\frac{\mu k_c}{k_min}\right)^{\gamma-3}$$
+
+
+
+
+\newpage

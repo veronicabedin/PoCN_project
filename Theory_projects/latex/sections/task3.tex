@@ -1,0 +1,87 @@
+\chapter{Patchy metapopulations, homogeneous mean field approximation}
+
+\resp{Veronica Bedin}
+
+
+\section{Metapopulation diffusion models}
+ 
+Metapopulation models provide a powerful framework for studying epidemic dynamics in spatially structured populations, where individuals reside in discrete subpopulations (or patches) and interact both locally and via migration \cite{colizza2007invasion,vespignani2008}. Each patch hosts standard compartmental dynamics (e.g., SI, SIR), while individuals move across a mobility network, coupling the local epidemics. This approach allows for the identification of both local epidemic thresholds and global invasion thresholds, which depend on the interplay between disease parameters and network topology \cite{ball1997}. These models have been fundamental in understanding real-world epidemic spread and mobility effects. \\
+A reaction--diffusion framework, commonly used in physical and chemical systems, can be adapted to model epidemic dynamics on networks. In this context, each subpopulation (or patch) $i$ is characterized by an occupation number $N_i$, representing the number of individuals in that patch, with the total population of the model given by $N = \sum_i N_i$. Individuals diffuse across the network along edges, with a diffusion coefficient $d_{ij}$ that may depend on node degrees, subpopulation sizes, or an external mobility matrix.
+
+
+\section{Derivation of the Invasion Threshold in the Homogeneous Metapopulation Case}
+
+This derivation follows the framework described in \cite{colizza2007invasion}.
+We consider a homogeneous metapopulation network in which each patch has the same degree \(\bar{k}\) and population size \(\bar{N}\). Local outbreaks are assumed to occur when the basic reproductive number within a patch satisfies \(R_0 > 1\), so that a fraction \(\alpha\bar{N}\) of individuals becomes infected during the course of the outbreak. $\alpha$ depends on the specific disease model used and the disease parameter values.
+
+Each infected individual remains infectious for an average duration \(\mu^{-1}\) and travels to one of its \(\bar{k}\) neighbors at rate \(d\). Therefore, the expected number of new infected seeds transmitted from patch \(i\) to neighbor \(j\) during a local outbreak is:
+\[
+\lambda_{\bar{k}\bar{k}} = d  \frac{\alpha\bar{N}}{\mu}.
+\]
+
+Using a tree-like approximation---which assumes that the metapopulation connectivity graph has no loops at the scale of the spreading process, i.e., during the early stages of the epidemic, it is unlikely that an infected patch is reinfected via another path---we let \(D_n\) be the number of infected patches in generation \(n\). This approximation allows us to model the early spread as a branching process. 
+Each infected patch in generation \(n-1\) spreads seeds to its \(\bar{k} - 1\) neighbors (excluding the parent patch).
+$$D_n=D_{n-1}(\bar{k}-1)\left[ 1-\left(\frac{1}{R_0}\right)^{\lambda_{\bar{k}\bar{k}}}\right]\left( 1-\frac{D^{n-1}}{V}\right)$$
+with $V$ number of nodes. \\
+The simplest case of homogeneous diffusion of individuals $d_{\bar{k}}=p/\bar{k}$ yields to $\lambda_{\bar{k}\bar{k}}=p\bar{N}\alpha\mu^{-1}/\bar{k}$. \\
+
+ Assuming that each seed causes a successful local outbreak with probability \(\approx R_0 - 1\) (valid for \(R_0 -1 \ll 1\)), we obtain:
+ \begin{equation}
+     \left[ 1-\left(\frac{1}{R_0}\right)^{\lambda_{\bar{k}\bar{k}}}\right]\simeq \lambda_{\bar{k}\bar{k}}(R_0-1)
+ \end{equation}
+ Assuming also that we are in the early stages, hence $D^{n-1}/V \ll 1$, we obtain 
+\begin{equation}
+D_n = p\bar{N}\alpha\mu^{-1}\frac{\bar{k}-1}{\bar{k}}(R_0-1)D_{n-1}.
+\end{equation}
+
+
+Thus, the number of infected patches grows when:
+\[
+p\bar{N}\alpha\mu^{-1}\frac{\bar{k}-1}{\bar{k}}(R_0-1) > 1.
+\]
+
+Defining the \emph{global invasion threshold} \(R^*\) as:
+\begin{equation}
+\label{app:R*}
+R^* = p\bar{N}\alpha\mu^{-1}\frac{\bar{k}-1}{\bar{k}}(R_0-1)
+\end{equation}
+we require \(R^* > 1\) for global invasion.
+
+Form Equation \ref{app:R*} is possible to write the threshold condition on the mobility rate \(d\):
+\[
+d^{-1} < \frac{(\bar{k} - 1)\,a\,\bar{N}\,(R_0 - 1)}{\mu}.
+\]
+that fixes the threshold in the diffusion rate of individuals for the global spread of the epidemic in the metapopulation systems.
+
+As pointed out in~\cite{cross2007}, the global spread of epidemics in structured populations is influenced not only by the basic reproductive number \( R_0 \), but also by factors such as the infectious period and the mobility process.
+
+In the \textit{SIR} model, for values of \( R_0 \) slightly above 1, the final size of the outbreak in a single patch, denoted by the constant \( \alpha \), can be approximated as~\cite{murray2005}:
+\[
+\alpha  \approx 2 \frac{\mu}{\beta}\left( 1-\frac{\mu}{\beta}\right) = \frac{2(R_0 - 1)}{R_0^2}.
+\]
+
+This approximation leads to a condition for the critical mobility rate that allows global invasion of the epidemic in a homogeneous metapopulation network:
+\begin{equation}
+p\bar{N} \geq \frac{ \bar{k}}{\bar{k} - 1} \cdot \frac{\mu R_0^2}{2(R_0 - 1)^2},
+\end{equation}
+
+This result shows that the closer \( R_0 \) is to the epidemic threshold, the higher the mobility rate must be to ensure the infection spreads across patches. For larger values of \( R_0 \), this approximation becomes invalid, and the invasion threshold must be computed using more complex, implicit expressions.
+Further evaluations of the \textit{Invasion threshold} for \textit{SI,SIS} and \textit{SEIR} can be found in Section \ref{app:Metapopulations}
+---
+
+\paragraph{Key implications:}
+
+\begin{itemize}
+    \item There are \textbf{two thresholds} in metapopulation models:
+    \begin{enumerate}
+        \item   Local threshold \(R_0 > 1\), ensuring each patch can sustain an outbreak.
+        \item   Global threshold \(R^* > 1\), ensuring the spread from patch-to-patch.
+    \end{enumerate}
+    \item  The threshold on travel/mobility rates is inversely proportional to \((\bar{k} - 1)(R_0 - 1)\), indicating that larger connectivity and higher local transmissibility lower the required diffusion rate for global spread.
+    \item  This framework correctly predicts the limited efficacy of travel restrictions: the mobility rate \(d\) must be reduced by orders of magnitude to halt global invasion, consistent with simulation results and historical pandemic data \cite{colizza2007invasion,colizza2008}.
+\end{itemize}
+
+
+
+
+\newpage
